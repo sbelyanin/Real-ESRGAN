@@ -101,6 +101,7 @@ class RRDBNet(nn.Module):
         self.conv_last = nn.Conv2d(num_feat, num_out_ch, 3, 1, 1)
 
         self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
+        self.conv_up3 = nn.Conv2d(num_feat, num_feat, 3, 1, 1)  # Добавьте этот слой
 
     def forward(self, x):
         if self.scale == 2:
