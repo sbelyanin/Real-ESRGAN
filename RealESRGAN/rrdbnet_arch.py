@@ -82,7 +82,7 @@ class RRDBNet(nn.Module):
         num_grow_ch (int): Channels for each growth. Default: 32.
     """
 
-    def __init__(self, num_in_ch, num_out_ch, scale=4, num_feat=64, num_block=23, num_grow_ch=32):
+    def __init__(self, num_in_ch=12, num_out_ch, scale=4, num_feat=64, num_block=23, num_grow_ch=32):
         super(RRDBNet, self).__init__()
         self.scale = scale
         if scale == 2:
@@ -95,13 +95,15 @@ class RRDBNet(nn.Module):
         # upsample
         self.conv_up1 = nn.Conv2d(num_feat, num_feat, 3, 1, 1)
         self.conv_up2 = nn.Conv2d(num_feat, num_feat, 3, 1, 1)
-        if scale == 8:
-            self.conv_up3 = nn.Conv2d(num_feat, num_feat, 3, 1, 1)
+        self.conv_up3 = nn.Conv2d(num_feat, num_feat, 3, 1, 1)  # Добавьте этот слой
+        self.conv_up4 = nn.Conv2d(num_feat, num_feat, 3, 1, 1)
+        #if scale == 8:
+        #    self.conv_up3 = nn.Conv2d(num_feat, num_feat, 3, 1, 1)
         self.conv_hr = nn.Conv2d(num_feat, num_feat, 3, 1, 1)
         self.conv_last = nn.Conv2d(num_feat, num_out_ch, 3, 1, 1)
 
         self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
-        self.conv_up3 = nn.Conv2d(num_feat, num_feat, 3, 1, 1)  # Добавьте этот слой
+
 
     def forward(self, x):
         if self.scale == 2:
